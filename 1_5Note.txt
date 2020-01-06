@@ -1,0 +1,24 @@
+#字典序的第k小数字
+#思路：字典序即十叉树的前序遍历， 要确定三个问题：当前prefix下有几个节点， k在当前prefix下的情况，k不在当前prefix下的情况。
+#js
+var findKthNumber = function(n, k) {
+  let getCount = (prefix, n) => {  #计算当前prefix下的节点个数
+    let count =  0;
+    for(let cur = prefix, next = prefix + 1; cur <= n; cur *= 10, next *= 10) 
+      count += Math.min(next, n+1) - cur; # 如果当前prefix下的最后一个节点比n大，就不是满十叉树， 需要取next和n+1之间更小的一个。
+    return count;
+  }
+  let p = 1; # 指向字典序的指针， 这里p相当于字典序的index
+  let prefix = 1; # prefix初始为1（1：[10，11，。。。。。。 19]）这里prefix相当于字典序的实际值
+  while(p < k) { # 当指针指向字典序第k个时停止
+    let count = getCount(prefix, n); # 取得当前prefix下的节点数
+    if(p + count > k) { # 当前指针位置加上当前prefix下的节点数如果大于k的话，说明k在当前的prefix下。
+      prefix *= 10; # prefix乘10得到当前子树的第一个值（1->10）
+      p++; # p指针加1得到字典序的下一个index， 和prefix相对应（1：1，2：10）
+    } else if(p + count <= k) { # 当前指针位置加上当前prefix下的节点数如果小于k的话，说明k不在当前prefix下。
+      prefix ++; # prefix加1得到下一颗树的根节点值
+      p += count; # p指针加count得到下一颗树根节点的字典序index（例：当k=4, prefix=10, p=2, n=100,count=2,下一步prefix=11,p=2+2=4）
+    }
+  }
+  return prefix; # 返回prefix值，即第k个字典序的值
+};
