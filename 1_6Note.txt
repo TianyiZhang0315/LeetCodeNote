@@ -1,0 +1,11 @@
+#重新排序得到2的幂
+
+#思路1：暴力枚举， 把开头不是0的组合一直除以2看最后的余数是1还是0
+
+#思路2：计数，用collections.counter()得到N的数字组合，如果和2的幂的其中一个组合相同，即有结果
+
+#知识点1：collections.Counter()模组用来生成一个counter， 包含各个元素的个数。 例子：a = Counter('abcd')
+a['a'] = 1
+
+#知识点2：itertools模组用来生成各种迭代器。permutation()生成各种排列的结果。例子：c = [for item in itertools.permutation('abc')]
+c = ['abc','acb','bca','bac','cab','cba']
